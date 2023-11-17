@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:gtecap/pages/my_profile.dart';
+import 'package:gtecap/pages/qr_scan.dart';
+import 'package:gtecap/pages/parts.dart';
+import 'package:gtecap/pages/dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class AppView extends StatefulWidget {
+  @override
+  State<AppView> createState() => _AppView();
+}
+
+class _AppView extends State<AppView> {
+  String? branch_code;
+
+  final List<Widget> _screens = const [
+    Dashboard(),
+    // Parts(),
+    QRScanner(),
+    Profile(),
+    // Add more screens as needed
+  ];
+
+  int _selectedIndex = 0; // Use _selectedIndex to manage the selected tab
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex =
+          index; // Update the selected index when an item is tapped
+    });
+  }
+
+  Future<void> _loadData() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      branch_code = prefs.getString('brn_code');
+    } catch (e) {}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _screens[
+          _selectedIndex], // Use _selectedIndex to switch between screens
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+            backgroundColor: Color.fromARGB(255, 176, 228, 116),
+          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.settings),
+          //   label: 'Parts',
+          //   backgroundColor: Color.fromARGB(255, 176, 228, 116),
+          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.qr_code),
+            label: 'Scan QR',
+            backgroundColor: Color.fromARGB(255, 176, 228, 116),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_box_outlined),
+            label: 'My Profile',
+            backgroundColor: Color.fromARGB(255, 176, 228, 116),
+          ),
+        ],
+        // type: BottomNavigationBarType.shifting,
+        currentIndex: _selectedIndex, // Use _selectedIndex as the current index
+        selectedItemColor:
+            Color.fromARGB(255, 255, 254, 254), // Color for selected items
+        onTap: _onItemTapped, // Call _onItemTapped when an item is tapped
+        unselectedItemColor: Color.fromARGB(255, 129, 125, 125),
+        backgroundColor: Colors.lightGreen,
+        selectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+      ),
+    );
+  }
+}
