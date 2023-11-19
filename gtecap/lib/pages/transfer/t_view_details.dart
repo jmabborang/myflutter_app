@@ -299,18 +299,7 @@ class _TViewDetailsState extends State<TViewDetails> {
           ).show();
         }
       } else {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.error,
-          animType: AnimType.rightSlide,
-          headerAnimationLoop: false,
-          title: 'Error',
-          desc:
-              'Dialog description here..................................................',
-          btnOkOnPress: () {},
-          btnOkIcon: Icons.cancel,
-          btnOkColor: Colors.red,
-        ).show();
+        
       }
     } catch (e) {
       // Handle any exceptions that may occur during the request.
