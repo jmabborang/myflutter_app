@@ -36,6 +36,7 @@ class QRViewExample extends StatefulWidget {
 class _QRViewExampleState extends State<QRViewExample> {
   Barcode? result;
   QRViewController? controller;
+  String user_brncode, position;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   // ignore: non_constant_identifier_names
@@ -43,28 +44,49 @@ class _QRViewExampleState extends State<QRViewExample> {
     // view the qrcode details
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('truck_code', Code!);
-
+    user_brncode = prefs.getString('brn_code');
+    position = prefs.getString('user_position');
+    
     try {
       var url = Uri.https('clambagojbmgeos12435aqwdvcxwetv7543.com',
           'Api/public/transfer/qrcodes');
       var response = await http.post(url, body: {
         'qrcode': Code,
+        'brncode': user_brncode,
+        'position': position
       });
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
       if (response.statusCode == 200) {
         // Successful POST request
         final responseData = json.decode(response.body);
-
-        // print(respon seData['data']['user_id']);
-        // print(responseData['data']['user_fname']);
-        // print(responseData['message']);
+        
         if (responseData['status'] == 'success') {
           // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const RViewDetails()),
           );
+        } else if(responseData['status'] == 'unable to receive')
+        {
+          AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.warning,
+                      headerAnimationLoop: false,
+                      animType: AnimType.bottomSlide,
+                      title: 'Truck was not allocated to the branch.',
+                      desc: 'Do you still want to receive it?',
+                      buttonsTextStyle: const TextStyle(color: Colors.black),
+                      showCloseIcon: true,
+                      btnCancelOnPress:  () {
+                        // back to dashboard
+                      },
+                      btnOkOnPress: () 
+                        // proceed to received the truck and the remarks is required
+                        // truck transfer was being altered to be received by the other branch
+                      },
+            
+                    ).show();
         } else {
           // ignore: use_build_context_synchronously
           AwesomeDialog(
