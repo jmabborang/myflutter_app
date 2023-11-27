@@ -270,7 +270,7 @@ class _RViewDetailsState extends State<RViewDetails> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Truck Details',
+                    'Received Truck',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -279,43 +279,60 @@ class _RViewDetailsState extends State<RViewDetails> {
                   ),
                 ),
               ),
-              // HorizontalImageGallery(), // Display the image gallery
+              
 
               Container(
                 child: Column(
                   children: <Widget>[
-                    // Padding(
-                    //   padding: EdgeInsets.fromLTRB(25, 10, 25, 0),
-                    //   child: Align(
-                    //     alignment: Alignment.centerLeft,
-                    //     child:  Column(
-                    //         children:[
-                    //           Text(
-                    //             'Remarks:',
-                    //             style: TextStyle(
-                    //               fontSize: 16,
-                    //               fontWeight: FontWeight.normal,
-                    //               color: Color.fromARGB(255, 78, 78, 78),
-                    //             ),
-                    //           ),
-                    //           TextField(
-                    //             controller: _textController,
-                    //             maxLines: null, // Allows multiple lines of text
-                    //             decoration: InputDecoration(
-                    //               border: OutlineInputBorder(),
-                    //             ),
-                    //           ),
-                    //         ]
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(25, 10, 25, 0),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Remarks:',
+                          'Truck Code: TU5',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromARGB(255, 78, 78, 78),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(25, 10, 25, 0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Transfer to: MALI-00',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromARGB(255, 78, 78, 78),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(25, 10, 25, 0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Received by: MEYC (current user branch code)',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromARGB(255, 78, 78, 78),
+                          ),
+                        ),
+                      ),
+                    ),
+                    
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(25, 10, 25, 0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Reason (required):',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
