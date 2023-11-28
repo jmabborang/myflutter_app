@@ -157,7 +157,7 @@ class _RViewDetailsState extends State<RViewDetails> {
   Future<void> changeLocation() async {
     final Uri url = Uri.https(
       'clambagojbmgeos12435aqwdvcxwetv7543.com',
-      'Api/public/transfer/received',
+      'Api/public/alter/received',
     );
 
     final Map<String, dynamic> requestBody = {
@@ -263,8 +263,7 @@ class _RViewDetailsState extends State<RViewDetails> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 40),
-              // Text(truck_code!),
+              SizedBox(height: 40), 
               const Padding(
                 padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
                 child: Align(
@@ -290,6 +289,20 @@ class _RViewDetailsState extends State<RViewDetails> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Truck Code: TU5',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromARGB(255, 78, 78, 78),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(25, 10, 25, 0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Transfer by: MAR',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
