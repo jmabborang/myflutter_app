@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:gtecap/main.dart';
@@ -11,14 +10,14 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class RViewDetails extends StatefulWidget {
-  const RViewDetails({Key? key}) : super(key: key);
+class AlterRViewDetails extends StatefulWidget {
+  const AlterRViewDetails({Key? key}) : super(key: key);
 
   @override
-  State<RViewDetails> createState() => _RViewDetailsState();
+  State<AlterRViewDetails> createState() => _AlterRViewDetailsState();
 }
 
-class _RViewDetailsState extends State<RViewDetails> {
+class _AlterRViewDetailsState extends State<AlterRViewDetails> {
   File? _imageFile1, _imageFile2, _imageFile3, _imageFile4, _imageFile5;
   String? selectedValue,
       brnCode,
@@ -26,11 +25,13 @@ class _RViewDetailsState extends State<RViewDetails> {
       user_id,
       acct_type,
       formattedDate,
-      return_id;
+      return_id,
+      brncode_dest,
+      transfer_brncode,
+      received_brncode;
 
   List<Map<String, dynamic>> items = [];
   final _textController = TextEditingController();
-  int _count = 0;
 
   Future<File?> captureImage() async {
     final picker = ImagePicker();
@@ -129,6 +130,12 @@ class _RViewDetailsState extends State<RViewDetails> {
       truck_code = prefs.getString('truck_code');
 
       acct_type = prefs.getString('user_position').toString();
+
+      brncode_dest = prefs.getString('brnCode_dest').toString();
+
+      transfer_brncode = prefs.getString('transfer_brncode').toString();
+
+      received_brncode = prefs.getString('received_brncode').toString();
 
       // truck_code = "BSIT12345";
 
@@ -263,7 +270,7 @@ class _RViewDetailsState extends State<RViewDetails> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 40), 
+              SizedBox(height: 40),
               const Padding(
                 padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
                 child: Align(
@@ -278,8 +285,6 @@ class _RViewDetailsState extends State<RViewDetails> {
                   ),
                 ),
               ),
-              
-
               Container(
                 child: Column(
                   children: <Widget>[
@@ -288,7 +293,7 @@ class _RViewDetailsState extends State<RViewDetails> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Truck Code: TU5',
+                          'Truck Code: ${truck_code}',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -302,7 +307,7 @@ class _RViewDetailsState extends State<RViewDetails> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Transfer by: MAR',
+                          'Transfer by: ${transfer_brncode}',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -316,7 +321,7 @@ class _RViewDetailsState extends State<RViewDetails> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Transfer to: MALI-00',
+                          'Transfer to: ${brncode_dest}',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -330,7 +335,7 @@ class _RViewDetailsState extends State<RViewDetails> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Received by: MEYC (current user branch code)',
+                          'Received by: ${received_brncode}',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -339,7 +344,7 @@ class _RViewDetailsState extends State<RViewDetails> {
                         ),
                       ),
                     ),
-                    
+
                     Padding(
                       padding: EdgeInsets.fromLTRB(25, 10, 25, 0),
                       child: Align(
@@ -648,7 +653,8 @@ class _RViewDetailsState extends State<RViewDetails> {
                       padding: EdgeInsets.fromLTRB(10, 10, 20, 20),
                       child: ElevatedButton(
                         onPressed: () {
-                          if ((_imageFile1 != null) &&
+                          if ((_textController.text != "") &&
+                              (_imageFile1 != null) &&
                               (_imageFile2 != null) &&
                               (_imageFile3 != null) &&
                               (_imageFile4 != null) &&
