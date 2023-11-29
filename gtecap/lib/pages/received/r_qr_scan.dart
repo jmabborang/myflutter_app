@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:gtecap/pages/received/alter_received.dart';
 import 'package:gtecap/pages/received/r_view_details.dart';
 import 'package:gtecap/templates/navbar.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -36,7 +37,7 @@ class QRViewExample extends StatefulWidget {
 class _QRViewExampleState extends State<QRViewExample> {
   Barcode? result;
   QRViewController? controller;
-  String user_brncode, position;
+  String? user_brncode, position, from_brncode, to_brncode;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   // ignore: non_constant_identifier_names
@@ -46,7 +47,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     await prefs.setString('truck_code', Code!);
     user_brncode = prefs.getString('brn_code');
     position = prefs.getString('user_position');
-    
+
     try {
       var url = Uri.https('clambagojbmgeos12435aqwdvcxwetv7543.com',
           'Api/public/transfer/qrcodes');
@@ -59,34 +60,49 @@ class _QRViewExampleState extends State<QRViewExample> {
       print('Response body: ${response.body}');
       if (response.statusCode == 200) {
         // Successful POST request
+        // final responseAPI = response.body;
         final responseData = json.decode(response.body);
-        
+
+        // print(responseAPI[]);
         if (responseData['status'] == 'success') {
           // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const RViewDetails()),
           );
-        } else if(responseData['status'] == 'unable to receive')
-        {
+        } else if (responseData['status'] == 'unable to receive') {
+          // await prefs.setString('truck_code',
+          //     responseData['truck_details']['truck_code'].toString());
+          to_brncode = responseData['truck_details']['to_brncode'];
+          from_brncode = responseData['truck_details']['from_brncode'];
+          // received_brncode= responseData['truck_details']['to_brncode'];
+          print('Branch Code:${to_brncode}');
+
+          await prefs.setString('brnCode_dest', to_brncode.toString());
+          await prefs.setString('transfer_brncode', from_brncode.toString());
+          await prefs.setString('received_brncode', user_brncode.toString());
+
           AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.warning,
-                      headerAnimationLoop: false,
-                      animType: AnimType.bottomSlide,
-                      title: 'Truck was not allocated to the branch.',
-                      desc: 'Do you still want to receive it?',
-                      buttonsTextStyle: const TextStyle(color: Colors.black),
-                      showCloseIcon: true,
-                      btnCancelOnPress:  () {
-                        // back to dashboard
-                      },
-                      btnOkOnPress: () 
-                        // proceed to received the truck and the remarks is required
-                        // truck transfer was being altered to be received by the other branch
-                      },
-            
-                    ).show();
+            context: context,
+            dialogType: DialogType.warning,
+            headerAnimationLoop: false,
+            animType: AnimType.bottomSlide,
+            title: 'Truck was not allocated to the branch.',
+            desc: 'Do you still want to receive it?',
+            buttonsTextStyle: const TextStyle(color: Colors.black),
+            showCloseIcon: true,
+            btnCancelOnPress: () {
+              // back to dashboard
+            },
+            btnOkOnPress: () {
+              // proceed to received the truck and the remarks is required
+              // truck transfer was being altered to be received by the other branch
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AlterRViewDetails()),
+              );
+            },
+          ).show();
         } else {
           // ignore: use_build_context_synchronously
           AwesomeDialog(
@@ -108,6 +124,12 @@ class _QRViewExampleState extends State<QRViewExample> {
       }
     } catch (e) {
       throw (e);
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      // TODO: implement build
+      throw UnimplementedError();
     }
   }
 
@@ -156,7 +178,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                               setQrCode(result!.code);
                             },
                             child: Text(
-                              'View Details',
+                              'Received',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
